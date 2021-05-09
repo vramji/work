@@ -35,7 +35,6 @@ double ComputeFastestTime(double bridge_length, vector<Hiker *> hiker_list) {
        }
    }
    total_time += ((no_hikers - 2) * bridge_length / fastest_hiker_speed);
-   cout <<"total time is " << total_time << "at " << bridge_length << endl;
    return total_time;
 }
 /*

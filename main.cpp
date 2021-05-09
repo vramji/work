@@ -31,7 +31,6 @@ int ParseInput(vector < Bridge *> &bridges, vector < vector < Hiker *>> &hikers)
 
       bool comment_found = (std::regex_search (s2, m2, comment_val));
       if (comment_found) {
-          cout << "skipping comment line " << endl << line << endl;
           continue;
       }
       bool map_found = (std::regex_search (s2, m, map_val));
@@ -82,21 +81,6 @@ int ParseInput(vector < Bridge *> &bridges, vector < vector < Hiker *>> &hikers)
           hikers.push_back(hiker_level);
     }
 
-#if 1
-    // Print
-    cout << "bridges " << num_bridges << endl << "-------------" << endl;
-    for (int i = 0; i < num_bridges; ++i) {
-        cout << bridges[i]->get_id() << " " <<  bridges[i]->get_length() << " ";
-    }
-    cout << endl;
-    cout << " hikers " << endl << "-----------------" << endl;
-    for (int i = 0; i < hikers.size(); ++i) {
-        cout << "Hiker at Bridge " << i << endl;
-        for (int j = 0; j < hikers[i].size(); ++j) {
-            cout << hikers[i][j]->get_name() << " " << hikers[i][j]->get_speed() << endl;
-        }
-    }
-#endif
     return 0;
 }
 int main() {
@@ -106,8 +90,7 @@ int main() {
         cout << "Cannot read Input file" << endl;
         return -1;
     }
-    cout << ComputeFastestTime(bridges, H) << endl;
-    cout << "done" << endl;
+    cout << "Time to cross the bridges is " << ComputeFastestTime(bridges, H) << endl;
     return 0;
 }
 
