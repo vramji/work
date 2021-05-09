@@ -1,0 +1,12 @@
+#2 bridges and a faster hiker joining at second bridge.
+
+bridges:
+  - bridge name:
+      - length: 2
+      - Hiker 1: 4
+        Hiker2: 2
+  - bridge name:
+      - length: 4
+      - Hiker3: 6
+        Hiker4: 2
+

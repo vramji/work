@@ -1,0 +1,20 @@
+#4 bridges. 
+
+bridges:
+  - bridge name1:
+      - length: 2
+      - Hiker 1: 4
+        Hiker2: 2
+  - bridge name2:
+      - length: 4
+      - Hiker3: 4
+        Hiker4: 2
+  - bridge name3:
+      - length: 4
+      - Hiker3: 4
+        Hiker4: 2
+  - bridge name4:
+      - length: 8
+      - Hiker3: 4
+        Hiker4: 2
+

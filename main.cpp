@@ -1,38 +1,39 @@
 #include <iostream>
 #include <string>
 #include <regex>
+#include <fstream>
 #include "hiker.h"
 
-#if 1
-void ParseInput() {
-  string s ("bridges: \n  - bridge name:\n \
-      - length: 2 \n\
-      - Hiker 1: 4 \n \
-        Hiker2: 2 \n \
-  - bridge name: \n \
-      - length: 4 \n \
-      - Hiker3: 4 \n \
-        Hiker5: 5 \n \
-        Hiker4: 2");
-  istringstream s1 (s);
-  string s2;
+int ParseInput(vector < Bridge *> &bridges, vector < vector < Hiker *>> &hikers) {
   int listlevel = 0;
   int bridge_id = 0;
   Bridge *bridge = NULL;
   Hiker *hiker = NULL;
-  vector < Bridge *> bridges;
-  vector < vector < Hiker *>> hikers;
   vector < Hiker * > hiker_level;
   int num_bridges = 0;
+  char line[256];
+  fstream f_hdl;
+
+  f_hdl.open("input.yml", ios::in);
+  if (!f_hdl.is_open()) {
+      cout << "Error opening file input.yml" << endl;
+      return -1;
+  }
   bridge = new Bridge(bridge_id, 0);
-  while (s1.good ())
+  while (f_hdl.good ())
     {
-      std::getline (s1, s2);
-      std::smatch m, m1;
-      cout << "line is " << s2 << endl;
+      f_hdl.getline(line, 256);
+      string s2(line);
+      std::smatch m, m1, m2;
+      std::regex comment_val ("[ ]*#");
       std::regex list_val ("-[ ]+");
       std::regex map_val (":[ ]+");
 
+      bool comment_found = (std::regex_search (s2, m2, comment_val));
+      if (comment_found) {
+          cout << "skipping comment line " << endl << line << endl;
+          continue;
+      }
       bool map_found = (std::regex_search (s2, m, map_val));
       bool list_found = (std::regex_search (s2, m1, list_val));
       string str;
@@ -44,21 +45,13 @@ void ParseInput() {
       }
       if (map_found)
 	{
-	  cout << "MAP val found at " << 
-                 m.prefix ().length () << m.prefix () << endl;
-	  std::cout << m.suffix ();
-	  cout << endl;
 	  string hikername = "";
           str = m.prefix ().str ();
           p = str.find_first_not_of (" -");
-	  cout << "AT " << p << endl;
 	  hikername = str.substr (p, string::npos);
-	  cout << "hiker name is " << hikername << endl;
 	  str = m.suffix ().str ();
 	  p = str.find_first_not_of (" ");
-	  cout << "speed string is " << str << endl;
 	  int speed = stoi (str.substr (p, string::npos));
-	  //cout << "speed is " << speed << endl;
           if (list_found) {
 	      listlevel = m1.prefix ().length ();
           } 
@@ -67,31 +60,23 @@ void ParseInput() {
                   bridge->set_length(speed);
                   bridges.push_back(bridge);
                   num_bridges++;
-                  cout << "inserted bridge " << bridge->get_id() << " " << speed << endl;
               }
               continue;
           }
-          cout << "hiker name is NOT LENGTH " << "|" << hikername << "|" << endl;
           hiker = new Hiker(hikername, speed);
           hiker_level.push_back(hiker);
 	}
       else if (list_found)
 	{
-	  std::cout << "FOUND list " << listlevel << " prefix length " << m1.prefix().length() << endl;
 	  if (m1.prefix ().length () < listlevel)
 	    {
 	      bridge_id++;
               hikers.push_back(hiker_level);
 	      hiker_level.clear ();
               bridge = new Bridge(bridge_id, 0);
-              cout << "new list created bridge " << bridge->get_id() << endl;
 	    }
 	  listlevel = m1.prefix ().length ();
-	  cout << "list found at " << m1.prefix ().
-	  length () << " " << listlevel << " id " << bridge_id << endl;
-	  cout << endl;
 	}
-        cout << "list level is now " << listlevel << endl << endl << endl;
     }
     if (hiker_level.size() != 0) {
           hikers.push_back(hiker_level);
@@ -112,28 +97,15 @@ void ParseInput() {
         }
     }
 #endif
+    return 0;
 }
-#endif
 int main() {
-    ParseInput();
-    string s = "ramji";
-    Hiker hik(s, 20);
-    string s1 = "r";
-    Hiker hik1(s1, 2);
-    string s2 = "r1";
-    Hiker hik2(s2, 1);
     vector<Bridge *> bridges;
-    Bridge a1(0, 40);
-    Bridge a2(0, 20);
-    bridges.push_back(&a1);
-    bridges.push_back(&a2);
     vector<vector<Hiker *>> H;
-    vector<Hiker *> H1, H2;
-    H1.push_back(&hik);
-    H2.push_back(&hik1);
-    H2.push_back(&hik2);
-    H.push_back(H1);
-    H.push_back(H2);
+    if (ParseInput(bridges, H) < 0) {
+        cout << "Cannot read Input file" << endl;
+        return -1;
+    }
     cout << ComputeFastestTime(bridges, H) << endl;
     cout << "done" << endl;
     return 0;

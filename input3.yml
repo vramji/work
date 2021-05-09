@@ -1,0 +1,14 @@
+#3 bridges and no hiker joining at second bridge, 2 hikers joining at third bridge.
+
+bridges:
+  - bridge name1:
+      - length: 2
+      - Hiker 1: 4
+        Hiker2: 2
+  - bridge name2:
+      - length: 4
+  - bridge name3:
+      - length: 4
+      - Hiker3: 4
+        Hiker4: 2
+
