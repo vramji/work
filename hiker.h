@@ -28,6 +28,9 @@ public:
     void set_length(int len) {
         this->length = len;
     }
+    int get_id() {
+        return Bridge_idx;
+    }
 };
 
 double ComputeFastestTime(vector<Bridge *>& bridges, vector<vector<Hiker *>>& hikers);
