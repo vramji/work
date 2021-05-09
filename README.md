@@ -19,7 +19,9 @@ Input is read from the file input.yml by default.
 To use a different input file, specify the filename as command line argument.
 
 eg.
+
 ./hiker input.yml
+
 ./hiker input1.yml
 
 1. One test case configures 2 persons in the first bridge, and 2 additional
