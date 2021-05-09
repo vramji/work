@@ -4,7 +4,7 @@
 #include <fstream>
 #include "hiker.h"
 
-int ParseInput(vector < Bridge *> &bridges, vector < vector < Hiker *>> &hikers) {
+int ParseInput(string filename, vector < Bridge *> &bridges, vector < vector < Hiker *>> &hikers) {
   int listlevel = 0;
   int bridge_id = 0;
   Bridge *bridge = NULL;
@@ -14,11 +14,12 @@ int ParseInput(vector < Bridge *> &bridges, vector < vector < Hiker *>> &hikers)
   char line[256];
   fstream f_hdl;
 
-  f_hdl.open("input.yml", ios::in);
+  f_hdl.open(filename.c_str(), ios::in);
   if (!f_hdl.is_open()) {
-      cout << "Error opening file input.yml" << endl;
+      cout << "Error opening file " << filename << endl;
       return -1;
   }
+  cout << "Reading Input from " << filename << endl;
   bridge = new Bridge(bridge_id, 0);
   while (f_hdl.good ())
     {
@@ -83,10 +84,14 @@ int ParseInput(vector < Bridge *> &bridges, vector < vector < Hiker *>> &hikers)
 
     return 0;
 }
-int main() {
+int main(int argc, char *argv[]) {
     vector<Bridge *> bridges;
     vector<vector<Hiker *>> H;
-    if (ParseInput(bridges, H) < 0) {
+    string filename = "input.yml";
+    if (argc > 1) {
+       filename = argv[1];
+    }
+    if (ParseInput(filename, bridges, H) < 0) {
         cout << "Cannot read Input file" << endl;
         return -1;
     }

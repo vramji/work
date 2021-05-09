@@ -15,9 +15,12 @@ entries providing information on Hiker name and the corresponding speed.
 
 Testing
 -------
-Input is read from the file input.yml.
-To test additional input files in input1.yml, input2.yml, etc...., rename these
-files as input.yml.
+Input is read from the file input.yml by default.
+To use a different input file, specify the filename as command line argument.
+
+eg.
+./hiker input.yml
+./hiker input1.yml
 
 1. One test case configures 2 persons in the first bridge, and 2 additional
 persons joining in the second bridge. This computes the total time taken
