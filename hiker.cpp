@@ -10,14 +10,25 @@ Hiker::Hiker(string hiker_name, int speed) {
     this->speed = speed;
 }
 
-double ComputeFastestTime(double bridge_length, vector<Hiker *> hiker_list) {
+/*
+ * Computes the time taken to cross a single bridge.
+ * The list of hikers includes the hikers who crossed
+ * previous bridges as well as the new hikers who joined
+ * in this bridge.
+ * returns the total time taken to cross this bridge.
+ */
+static double ComputeFastestTime(double bridge_length, vector<Hiker *> hiker_list) {
    int no_hikers = 0, i;
    double total_time = 0.0;
    int fastest_hiker_index = 0, fastest_hiker_speed = 0;
    no_hikers = hiker_list.size();
+
+   // If there are no hikers, nothing to do.
    if (no_hikers <= 0) {
        return 0;
    }
+
+   // If there is only one hiker, one trip is sufficient.
    if (no_hikers == 1) {
        total_time += bridge_length / (hiker_list[0]->get_speed());
        return total_time;
@@ -38,7 +49,10 @@ double ComputeFastestTime(double bridge_length, vector<Hiker *> hiker_list) {
    return total_time;
 }
 /*
- * hikers[i] is an array of hiker names corresponding to bridges[i] 
+ * Computes the time taken to cross all bridges.
+ * bridges is an sequence of bridges.
+ * hikers[i] is an array of hiker names corresponding to bridges[i]
+ * returns the total time taken to cross all the bridges.
  */
 double ComputeFastestTime(vector<Bridge *>& bridges, vector<vector<Hiker *>>& hikers)
 {

@@ -4,6 +4,10 @@
 #include <fstream>
 #include "hiker.h"
 
+/*
+ * Parses Input from the given YML file and populates the bridges vector and
+ * hikers corresponding to each bridge.
+ */
 int ParseInput(string filename, vector < Bridge *> &bridges, vector < vector < Hiker *>> &hikers) {
   int listlevel = 0;
   int bridge_id = 0;
@@ -14,12 +18,15 @@ int ParseInput(string filename, vector < Bridge *> &bridges, vector < vector < H
   char line[256];
   fstream f_hdl;
 
+  // Open the default or user provided file
   f_hdl.open(filename.c_str(), ios::in);
   if (!f_hdl.is_open()) {
       cout << "Error opening file " << filename << endl;
       return -1;
   }
   cout << "Reading Input from " << filename << endl;
+
+
   bridge = new Bridge(bridge_id, 0);
   while (f_hdl.good ())
     {
@@ -30,14 +37,19 @@ int ParseInput(string filename, vector < Bridge *> &bridges, vector < vector < H
       std::regex list_val ("-[ ]+");
       std::regex map_val (":[ ]+");
 
+      // Look for comment lines that can be skipped.
       bool comment_found = (std::regex_search (s2, m2, comment_val));
       if (comment_found) {
           continue;
       }
+
+      // Use regex to search for mappings and sequences.
       bool map_found = (std::regex_search (s2, m, map_val));
       bool list_found = (std::regex_search (s2, m1, list_val));
       string str;
       str = m.suffix ().str ();
+
+      // Skip leading white spaces.
       int p = str.find_first_not_of (" ");
       if ((str.length () <= 0) || (p < 0))
       {
@@ -64,6 +76,8 @@ int ParseInput(string filename, vector < Bridge *> &bridges, vector < vector < H
               continue;
           }
           hiker = new Hiker(hikername, speed);
+
+          // Insert the list of hikers found in this iteration.
           hiker_level.push_back(hiker);
 	}
       else if (list_found)
@@ -78,12 +92,16 @@ int ParseInput(string filename, vector < Bridge *> &bridges, vector < vector < H
 	  listlevel = m1.prefix ().length ();
 	}
     }
+
+    // Insert the list of hikers found in the last iteration.
     if (hiker_level.size() != 0) {
           hikers.push_back(hiker_level);
     }
 
     return 0;
 }
+
+
 int main(int argc, char *argv[]) {
     vector<Bridge *> bridges;
     vector<vector<Hiker *>> H;

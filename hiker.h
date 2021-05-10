@@ -5,6 +5,7 @@
 
 using namespace std;
 
+// Maintains information on a single Hiker (name and speed).
 class Hiker {
     string name;
     int    speed;
@@ -14,6 +15,7 @@ public:
     string get_name() { return this->name;}
 };
 
+// Maintains information on a single Bridge (index and length of the Bridge).
 class Bridge {
     int Bridge_idx;
     int length;
@@ -33,5 +35,6 @@ public:
     }
 };
 
-double ComputeFastestTime(vector<Bridge *>& bridges, vector<vector<Hiker *>>& hikers);
+double ComputeFastestTime(vector<Bridge *>& bridges,
+                          vector<vector<Hiker *>>& hikers);
 
